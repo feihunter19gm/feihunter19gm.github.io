@@ -1,0 +1,9 @@
+.card-widget.card-makyo-support
+  .item-headline
+    i.fas.fa-qrcode
+    span 站点支持
+  .card-makyo-support__content
+    .card-makyo-support__qr
+      img(src=url_for('/img/qr-contact.png') alt='个人二维码' onerror="this.style.display='none'; this.nextElementSibling.hidden=false")
+      span(hidden=false) QR
+    p 扫码支持站点。将二维码图片放入 <code>source/img/qr-contact.png</code> 即可自动替换。

@@ -1,0 +1,320 @@
+.makyo-music,
+.makyo-portal
+  margin-bottom: 20px
+  border-radius: 12px
+  background: var(--card-bg)
+  box-shadow: var(--card-box-shadow)
+
+.makyo-music
+  display: grid
+  grid-template-columns: auto minmax(120px, .7fr) minmax(150px, .7fr) minmax(190px, .8fr)
+  align-items: center
+  gap: 14px
+  padding: 15px 20px
+
+.makyo-music__icon
+  display: grid
+  place-items: center
+  width: 38px
+  height: 38px
+  border-radius: 50%
+  background: var(--theme-color)
+  color: #fff
+
+.makyo-music__meta
+  display: grid
+  gap: 3px
+
+  span
+    color: var(--theme-color)
+    font-size: .62em
+    font-weight: bold
+    letter-spacing: .12em
+
+  strong
+    font-size: .9em
+
+.makyo-music__player
+  width: 100%
+  height: 34px
+
+.makyo-music__picker
+  display: flex
+  align-items: center
+  gap: 6px
+
+.makyo-music__select
+  min-width: 0
+  width: 100%
+  height: 34px
+  padding: 0 8px
+  border: 1px solid var(--light-grey)
+  border-radius: 5px
+  background: var(--card-bg)
+  color: var(--font-color)
+  font-size: .75em
+
+.makyo-music__nav
+  display: flex
+  gap: 3px
+
+  button
+    width: 28px
+    height: 28px
+    border-radius: 4px
+    background: var(--text-bg-hover)
+    color: var(--theme-color)
+
+    &:disabled
+      cursor: not-allowed
+      opacity: .45
+
+.makyo-portal
+  padding: 26px
+
+.makyo-portal__head
+  display: flex
+  align-items: flex-end
+  justify-content: space-between
+  gap: 20px
+  margin-bottom: 20px
+
+  h2
+    margin: 3px 0 0
+    font-size: 1.55em
+
+  > p
+    margin: 0
+    color: var(--font-color)
+    font-size: .86em
+    opacity: .7
+
+.makyo-portal__eyebrow
+  color: var(--theme-color)
+  font-size: .66em
+  font-weight: bold
+  letter-spacing: .13em
+
+.makyo-portal__grid
+  display: grid
+  grid-template-columns: 1.45fr .8fr
+  gap: 14px
+
+.makyo-portal__game,
+.makyo-portal__download
+  overflow: hidden
+  border-radius: 8px
+  background: linear-gradient(135deg, rgba(73,177,245,.13), rgba(255,114,66,.11))
+
+.makyo-portal__game
+  display: grid
+  grid-template-columns: 130px 1fr
+
+  > img
+    width: 130px
+    height: 100%
+    min-height: 158px
+    object-fit: cover
+
+.makyo-portal__game-copy,
+.makyo-portal__download
+  display: flex
+  flex-direction: column
+  align-items: flex-start
+  padding: 18px
+
+  > span
+    color: var(--theme-color)
+    font-size: .69em
+    font-weight: bold
+
+  h3
+    margin: 5px 0
+    font-size: 1.05em
+
+  p
+    margin: 0 0 13px
+    font-size: .78em
+    line-height: 1.6
+    opacity: .75
+
+  .button--animated
+    margin-top: auto
+    padding: 6px 11px
+    border-radius: 5px
+    background: var(--btn-bg)
+    color: var(--btn-color)
+    font-size: .78em
+
+.makyo-portal__download
+  border: 1px dashed var(--light-grey)
+  background: transparent
+
+  > i
+    margin-bottom: 8px
+    color: var(--theme-color)
+    font-size: 1.65em
+
+.makyo-gallery
+  margin-bottom: 20px
+  padding: 24px
+  border-radius: 12px
+  background: var(--card-bg)
+  box-shadow: var(--card-box-shadow)
+
+.makyo-gallery__head
+  display: flex
+  align-items: flex-end
+  justify-content: space-between
+  gap: 20px
+  margin-bottom: 16px
+
+  h2
+    margin: 3px 0 0
+    font-size: 1.35em
+
+  p
+    margin: 0
+    color: var(--font-color)
+    font-size: .76em
+    opacity: .7
+
+.makyo-gallery__stage
+  display: grid
+  grid-template-columns: 42px minmax(0, 1fr) 42px
+  align-items: center
+  overflow: hidden
+  min-height: 210px
+  border-radius: 8px
+  background: var(--text-bg-hover)
+
+.makyo-gallery__image
+  display: grid
+  place-items: center
+  overflow: hidden
+  height: 100%
+  min-height: 210px
+  background: rgba(0,0,0,.04)
+
+  img
+    width: 100%
+    height: 100%
+    max-height: 360px
+    object-fit: contain
+    transition: transform .3s
+
+  &:hover img
+    transform: scale(1.02)
+
+.makyo-gallery__empty
+  color: var(--font-color)
+  font-size: .8em
+  opacity: .55
+
+.makyo-gallery__arrow
+  z-index: 1
+  width: 32px
+  height: 42px
+  margin: auto
+  border-radius: 5px
+  background: var(--card-bg)
+  color: var(--theme-color)
+  font-size: 1.15em
+  box-shadow: 0 2px 8px rgba(0,0,0,.1)
+
+  &:disabled
+    cursor: not-allowed
+    opacity: .4
+
+.makyo-gallery__caption
+  margin: 10px 0 0
+  color: var(--font-color)
+  font-size: .72em
+  text-align: center
+  opacity: .7
+
+.card-makyo-support__content
+  display: flex
+  align-items: center
+  gap: 12px
+
+  p
+    margin: 0
+    font-size: .75em
+    line-height: 1.65
+
+  code
+    color: var(--theme-color)
+    font-size: .86em
+
+.card-makyo-support__qr
+  position: relative
+  flex: 0 0 64px
+  width: 64px
+  height: 64px
+  overflow: hidden
+  border-radius: 4px
+  background: #fff
+
+  img,
+  span
+    width: 100%
+    height: 100%
+
+  img
+    position: relative
+    z-index: 1
+    object-fit: cover
+
+  span
+    position: absolute
+    inset: 0
+    display: grid
+    place-items: center
+    background: repeating-linear-gradient(45deg, #1b2530 0, #1b2530 7px, #f5f5f5 7px, #f5f5f5 12px)
+    color: #fff
+    font-size: .65em
+    font-weight: bold
+
+@media (max-width: 768px)
+  .makyo-music
+    grid-template-columns: auto 1fr
+
+  .makyo-music__picker,
+  .makyo-music__player
+    grid-column: span 2
+
+@media (max-width: 600px)
+  .makyo-portal
+    padding: 18px
+
+  .makyo-portal__head
+    display: block
+
+    > p
+      margin-top: 8px
+
+  .makyo-gallery
+    padding: 18px
+
+  .makyo-gallery__head
+    display: block
+
+    p
+      margin-top: 8px
+
+  .makyo-gallery__stage,
+  .makyo-gallery__image
+    min-height: 180px
+
+  .makyo-portal__grid
+    grid-template-columns: 1fr
+
+  .makyo-portal__game
+    grid-template-columns: 100px 1fr
+
+    > img
+      width: 100px
+
+  .makyo-music
+    padding: 14px
