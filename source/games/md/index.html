@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>MD 在线模拟器 · 魔界游戏厅</title>
+  <meta name="description" content="在浏览器中运行合法 MD/Genesis ROM，支持手机虚拟按键。">
+  <style>
+    :root {
+      --bg: #0d1018;
+      --card: rgba(20, 26, 39, .86);
+      --line: rgba(255, 255, 255, .1);
+      --text: #f5f7fb;
+      --muted: rgba(245, 247, 251, .68);
+      --main: #ffd354;
+      --hot: #ffb020;
+      --safe: #42d392;
+      --shadow: 0 18px 60px rgba(0, 0, 0, .35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+      background:
+        radial-gradient(circle at 18% 12%, rgba(73, 177, 245, .26), transparent 30%),
+        radial-gradient(circle at 82% 12%, rgba(255, 114, 66, .22), transparent 28%),
+        linear-gradient(145deg, #111827, #090b10 58%, #11121a);
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .page {
+      width: min(1180px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 24px 0 28px;
+    }
+
+    .hero,
+    .panel,
+    .player-wrap {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--card);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.3fr .7fr;
+      gap: 18px;
+      margin-bottom: 16px;
+      padding: 22px;
+    }
+
+    .eyebrow {
+      color: var(--main);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .16em;
+    }
+
+    h1,
+    h2,
+    p {
+      margin-top: 0;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+      font-size: clamp(28px, 5vw, 52px);
+      line-height: 1;
+      letter-spacing: -.04em;
+    }
+
+    h2 {
+      margin-bottom: 12px;
+      font-size: 20px;
+    }
+
+    p {
+      color: var(--muted);
+      line-height: 1.72;
+    }
+
+    .hero__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .btn,
+    .file-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 16px;
+      border: 0;
+      border-radius: 999px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--main), var(--hot));
+      color: #071a3d;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .btn--ghost {
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, .08);
+    }
+
+    .btn--hot {
+      background: linear-gradient(135deg, var(--main), var(--hot));
+    }
+
+    .file-btn input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .status {
+      display: grid;
+      gap: 8px;
+      align-content: center;
+      padding: 18px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, .06);
+    }
+
+    .status strong {
+      color: var(--safe);
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 16px;
+    }
+
+    .player-wrap {
+      overflow: hidden;
+    }
+
+    #game-shell {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      min-height: 280px;
+      background: #05070b;
+    }
+
+    #game-frame {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #05070b;
+    }
+
+    .placeholder {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      text-align: center;
+      background:
+        linear-gradient(rgba(5, 7, 11, .74), rgba(5, 7, 11, .88)),
+        repeating-linear-gradient(0deg, transparent 0 5px, rgba(255, 255, 255, .03) 5px 6px);
+    }
+
+    .placeholder b {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 22px;
+    }
+
+    .touch-pad {
+      display: grid;
+      grid-template-columns: 168px 1fr 168px;
+      align-items: center;
+      gap: 18px;
+      padding: 16px;
+      border-top: 1px solid var(--line);
+      background: rgba(0, 0, 0, .26);
+      user-select: none;
+      touch-action: none;
+    }
+
+    .dpad {
+      display: grid;
+      grid-template-columns: repeat(3, 52px);
+      grid-template-rows: repeat(3, 52px);
+      gap: 4px;
+    }
+
+    .dpad .key[data-key="ArrowUp"] {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    .dpad .key[data-key="ArrowLeft"] {
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+    .dpad .key[data-key="ArrowRight"] {
+      grid-column: 3;
+      grid-row: 2;
+    }
+
+    .dpad .key[data-key="ArrowDown"] {
+      grid-column: 2;
+      grid-row: 3;
+    }
+
+    .system {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(3, 52px);
+      gap: 8px;
+      justify-content: end;
+    }
+
+    .key {
+      min-width: 46px;
+      min-height: 46px;
+      border: 1px solid rgba(255, 255, 255, .16);
+      border-radius: 16px;
+      color: #fff;
+      background: linear-gradient(145deg, rgba(255, 255, 255, .16), rgba(255, 255, 255, .06));
+      box-shadow: inset 0 -4px 10px rgba(0, 0, 0, .24), 0 8px 18px rgba(0, 0, 0, .22);
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .buttons .key {
+      border-radius: 50%;
+      color: #071a3d;
+      background: linear-gradient(145deg, #ffd354, #ffb020);
+    }
+
+    .key.is-pressed {
+      transform: translateY(2px) scale(.98);
+      filter: brightness(1.25);
+    }
+
+    .panel {
+      padding: 18px;
+    }
+
+    .panel + .panel {
+      margin-top: 16px;
+    }
+
+    .config {
+      display: grid;
+      gap: 10px;
+    }
+
+    .config label {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .config input {
+      width: 100%;
+      height: 40px;
+      margin-top: 6px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      color: var(--text);
+      background: rgba(0, 0, 0, .25);
+    }
+
+    .tips {
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    code {
+      padding: 2px 5px;
+      border-radius: 5px;
+      color: #b9e7ff;
+      background: rgba(73, 177, 245, .14);
+    }
+
+    @media (max-width: 900px) {
+      .hero,
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        width: min(100% - 18px, 1180px);
+        padding-top: 10px;
+      }
+
+      .hero,
+      .panel {
+        border-radius: 16px;
+        padding: 16px;
+      }
+
+      #game-shell {
+        min-height: 230px;
+      }
+
+      .touch-pad {
+        grid-template-columns: 132px 1fr 132px;
+        gap: 8px;
+        padding: 10px;
+      }
+
+      .dpad {
+        grid-template-columns: repeat(3, 40px);
+        grid-template-rows: repeat(3, 40px);
+      }
+
+      .buttons {
+        grid-template-columns: repeat(3, 40px);
+      }
+
+      .key {
+        min-width: 36px;
+        min-height: 36px;
+        border-radius: 12px;
+        font-size: 12px;
+      }
+
+      .system {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">MAKYO MD ONLINE</div>
+        <h1>MD 在线模拟器</h1>
+        <p>这个页面用于在浏览器中运行你有权使用的 MD / Genesis ROM。默认不携带商业游戏文件；你可以本地选择 ROM 测试，或者以后把授权 ROM 放到站点目录里一键启动。</p>
+        <div class="hero__actions">
+          <label class="file-btn">
+            <input id="rom-file" type="file" accept=".bin,.gen,.md,.smd,.zip">
+            选择本地 ROM
+          </label>
+          <button id="start-local" class="btn btn--hot" type="button" disabled>启动本地 ROM</button>
+          <a class="btn btn--ghost" href="/">返回首页</a>
+        </div>
+      </div>
+      <aside class="status">
+        <strong id="rom-status">等待选择 ROM</strong>
+        <p id="rom-help">支持 .bin / .gen / .md / .smd / .zip。手机端可使用下方虚拟按键，电脑端可直接用键盘。</p>
+      </aside>
+    </section>
+
+    <section class="main-grid">
+      <div class="player-wrap">
+        <div id="game-shell">
+          <iframe id="game-frame" title="MD 模拟器"></iframe>
+          <div id="placeholder" class="placeholder">
+            <div>
+              <b>请选择 ROM 后启动</b>
+              <p>为了版权安全，公开页面不内置《幽游白书 魔强统一战》等商业 ROM 文件。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="touch-pad" aria-label="虚拟按键">
+          <div class="dpad">
+            <button class="key" data-key="ArrowUp" type="button">↑</button>
+            <button class="key" data-key="ArrowLeft" type="button">←</button>
+            <button class="key" data-key="ArrowRight" type="button">→</button>
+            <button class="key" data-key="ArrowDown" type="button">↓</button>
+          </div>
+          <div class="system">
+            <button class="key" data-key="Enter" type="button">START</button>
+            <button class="key" data-key="Shift" type="button">MODE</button>
+          </div>
+          <div class="buttons">
+            <button class="key" data-key="KeyZ" type="button">A</button>
+            <button class="key" data-key="KeyX" type="button">B</button>
+            <button class="key" data-key="KeyC" type="button">C</button>
+            <button class="key" data-key="KeyA" type="button">X</button>
+            <button class="key" data-key="KeyS" type="button">Y</button>
+            <button class="key" data-key="KeyD" type="button">Z</button>
+          </div>
+        </div>
+      </div>
+
+      <aside>
+        <section class="panel">
+          <h2>站点 ROM 配置</h2>
+          <div class="config">
+            <label>
+              ROM 路径
+              <input id="preset-url" value="./roms/your-game.bin">
+            </label>
+            <button id="start-preset" class="btn" type="button">从站点目录启动</button>
+          </div>
+          <p>后期如果你有可公开使用的 ROM，可以放到 <code>source/games/md/roms/</code>，再把上面的路径改成对应文件名。</p>
+        </section>
+
+        <section class="panel">
+          <h2>默认按键</h2>
+          <ul class="tips">
+            <li>方向：键盘方向键 / 左侧虚拟方向键</li>
+            <li>A/B/C：Z / X / C</li>
+            <li>X/Y/Z：A / S / D</li>
+            <li>START：Enter</li>
+            <li>MODE：Shift</li>
+          </ul>
+        </section>
+
+        <section class="panel">
+          <h2>版权提醒</h2>
+          <p>这个页面只提供网页模拟器框架。请不要在公开网站上传、分发或自动加载未授权的商业 ROM。</p>
+        </section>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      const frame = document.querySelector('#game-frame')
+      const placeholder = document.querySelector('#placeholder')
+      const romFile = document.querySelector('#rom-file')
+      const startLocal = document.querySelector('#start-local')
+      const startPreset = document.querySelector('#start-preset')
+      const presetUrl = document.querySelector('#preset-url')
+      const status = document.querySelector('#rom-status')
+      const help = document.querySelector('#rom-help')
+      let localRomUrl = ''
+      let localRomName = ''
+
+      const escapeText = value => String(value).replace(/[&<>"']/g, char => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      }[char]))
+
+      const boot = (gameUrl, gameName) => {
+        placeholder.hidden = true
+        status.textContent = `正在启动：${gameName}`
+        help.textContent = '如果模拟器加载较慢，稍等几秒；首次运行需要从网络加载模拟器核心文件。'
+        frame.srcdoc = `<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    html, body, #game { width: 100%; height: 100%; margin: 0; background: #05070b; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <div id="game"></div>
+  <script>
+    window.EJS_player = '#game';
+    window.EJS_core = 'segaMD';
+    window.EJS_gameName = '${escapeText(gameName)}';
+    window.EJS_gameUrl = '${escapeText(gameUrl)}';
+    window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
+    window.EJS_startOnLoaded = true;
+  <\/script>
+  <script src="https://cdn.emulatorjs.org/stable/data/loader.js"><\/script>
+</body>
+</html>`
+      }
+
+      romFile.addEventListener('change', event => {
+        const file = event.target.files && event.target.files[0]
+        if (!file) return
+        if (localRomUrl) URL.revokeObjectURL(localRomUrl)
+        localRomUrl = URL.createObjectURL(file)
+        localRomName = file.name
+        startLocal.disabled = false
+        status.textContent = `已选择：${file.name}`
+        help.textContent = '点击“启动本地 ROM”后开始运行。'
+      })
+
+      startLocal.addEventListener('click', () => {
+        if (localRomUrl) boot(localRomUrl, localRomName || 'Local ROM')
+      })
+
+      startPreset.addEventListener('click', () => {
+        const url = presetUrl.value.trim()
+        if (!url) return
+        boot(url, url.split('/').pop() || 'Preset ROM')
+      })
+
+      const keyCodeMap = {
+        ArrowUp: 38,
+        ArrowDown: 40,
+        ArrowLeft: 37,
+        ArrowRight: 39,
+        Enter: 13,
+        Shift: 16,
+        KeyZ: 90,
+        KeyX: 88,
+        KeyC: 67,
+        KeyA: 65,
+        KeyS: 83,
+        KeyD: 68
+      }
+
+      const sendKey = (key, type) => {
+        const eventInit = {
+          key: key.startsWith('Key') ? key.replace('Key', '').toLowerCase() : key,
+          code: key,
+          keyCode: keyCodeMap[key] || 0,
+          which: keyCodeMap[key] || 0,
+          bubbles: true,
+          cancelable: true
+        }
+        const targets = [window, document]
+        try {
+          if (frame.contentWindow) targets.push(frame.contentWindow, frame.contentWindow.document)
+        } catch {}
+        targets.forEach(target => {
+          try {
+            target.dispatchEvent(new KeyboardEvent(type, eventInit))
+          } catch {}
+        })
+      }
+
+      document.querySelectorAll('.key').forEach(button => {
+        const key = button.dataset.key
+        const press = event => {
+          event.preventDefault()
+          button.classList.add('is-pressed')
+          sendKey(key, 'keydown')
+        }
+        const release = event => {
+          event.preventDefault()
+          button.classList.remove('is-pressed')
+          sendKey(key, 'keyup')
+        }
+        button.addEventListener('pointerdown', press)
+        button.addEventListener('pointerup', release)
+        button.addEventListener('pointercancel', release)
+        button.addEventListener('pointerleave', release)
+      })
+    })()
+  </script>
+</body>
+</html>

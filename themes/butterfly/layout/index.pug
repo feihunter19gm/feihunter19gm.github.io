@@ -18,30 +18,41 @@ block content
           button(type='button' aria-label='下一首' disabled)
             i.fas.fa-forward-step
       audio.makyo-music__player(controls preload='metadata') 你的浏览器不支持音频播放。
+
     .makyo-portal
       .makyo-portal__head
         div
           span.makyo-portal__eyebrow GAME & NOTES
           h2 魔界游戏厅
-        p HTML 小游戏、对战笔记与移动版下载都从这里出发。
+        p 以上部分主打 HTML 在线游戏、MD 模拟器入口和 APK 下载，文章笔记继续放在下方。
       .makyo-portal__grid
         article.makyo-portal__game
           img(src=url_for('/img/md11.jpg') alt='幽游白书魔强统一战')
           .makyo-portal__game-copy
-            span HTML 小游戏
-            h3 幽游白书 · 魔强统一战
-            p 浏览器直接游玩，无需安装。
-            a.button--animated(href=url_for('/games/makyo-toitsusen/index.html'))
+            span MD ONLINE
+            h3 MD 模拟器 · 网页试玩
+            p 支持本地选择合法 ROM 文件，并提供手机虚拟按键；公开上线时请只使用有授权的游戏资源。
+            a.button--animated(href=url_for('/games/md/'))
+              i.fas.fa-gamepad
+              |  进入模拟器
+        article.makyo-portal__game
+          img(src=url_for('/img/11ren.jpg') alt='HTML 在线小游戏')
+          .makyo-portal__game-copy
+            span HTML GAME
+            h3 HTML 小游戏专区
+            p 后期可把自己制作或授权的 HTML 游戏放到 <code>source/games/</code>，直接通过网页游玩。
+            a.button--animated(href=url_for('/games/'))
               i.fas.fa-play
-              |  开始游戏
+              |  查看游戏
         article.makyo-portal__download
           i.fab.fa-android
           span APK 下载
           h3 Android 移动版
-          p 后期上传 APK 后，访客可从这里直接下载。
+          p 后期上传 APK 到 <code>source/downloads/</code> 后，访客可以从这里直接下载。
           a.button--animated(href=url_for('/downloads/makyo-toitsusen.apk') download)
             i.fas.fa-download
             |  下载 APK
+
     section.makyo-gallery(data-manifest-url=url_for('/gallery/manifest.json'))
       .makyo-gallery__head
         div
@@ -57,5 +68,7 @@ block content
         button.makyo-gallery__arrow.makyo-gallery__next(type='button' aria-label='下一张图片' disabled)
           i.fas.fa-angle-right
       p.makyo-gallery__caption 图片上传后可通过左右箭头浏览，点击图片查看原图。
+
     +indexPostUI
+
   script(src=url_for('/js/makyo-media.js'))
