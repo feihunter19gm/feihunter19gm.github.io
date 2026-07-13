@@ -8,8 +8,47 @@
   --makyo-muted: rgba(255, 255, 255, .68)
   color: var(--makyo-text)
 
+#recent-posts
+  .recent-post-item
+    border: 1px solid rgba(255, 211, 84, .16)
+    background: linear-gradient(145deg, rgba(10, 25, 54, .96), rgba(7, 13, 30, .94))
+
+    .article-title
+      color: rgba(255, 255, 255, .96) !important
+
+    .content
+      color: rgba(255, 255, 255, .68)
+
+#aside-content
+  .card-widget
+    border: 1px solid rgba(255, 211, 84, .16)
+    background: linear-gradient(145deg, rgba(10, 25, 54, .96), rgba(7, 13, 30, .94))
+    color: rgba(255, 255, 255, .78)
+
+  .item-headline
+    color: rgba(255, 255, 255, .92)
+
+    i
+      color: #ffd354
+
+  .aside-list > .aside-list-item:not(:last-child)
+    border-bottom-color: rgba(255, 211, 84, .16)
+
+  .author-info-name,
+  .headline,
+  .length-num,
+  .aside-list .title
+    color: rgba(255, 255, 255, .9) !important
+
+  .card-info #card-info-btn
+    border: 1px solid rgba(255, 211, 84, .32)
+    background: linear-gradient(135deg, #ffd354, #ffb020)
+    color: #071a3d
+
 .makyo-music,
-.makyo-portal
+.makyo-portal,
+.makyo-rank,
+.makyo-links
   margin-bottom: 20px
   border: 1px solid rgba(255, 211, 84, .16)
   border-radius: 12px
@@ -84,7 +123,9 @@
 .makyo-portal
   padding: 26px
 
-.makyo-portal__head
+.makyo-portal__head,
+.makyo-rank__head,
+.makyo-links__head
   display: flex
   align-items: flex-end
   justify-content: space-between
@@ -174,6 +215,93 @@
     margin-bottom: 8px
     color: var(--makyo-yellow)
     font-size: 1.65em
+
+.makyo-rank
+  padding: 24px
+
+.makyo-links
+  padding: 24px
+
+.makyo-links__grid
+  display: grid
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr))
+  gap: 12px
+
+.makyo-links__item
+  display: grid
+  gap: 6px
+  padding: 16px
+  border: 1px solid rgba(255, 211, 84, .16)
+  border-radius: 12px
+  background: radial-gradient(circle at 88% 0, rgba(255, 211, 84, .13), transparent 32%), linear-gradient(135deg, rgba(13, 44, 102, .72), rgba(6, 17, 42, .9))
+  color: rgba(255, 255, 255, .9)
+  transition: transform .2s, border-color .2s, box-shadow .2s
+
+  i
+    color: var(--makyo-yellow)
+    font-size: 1.25em
+
+  span
+    font-weight: bold
+
+  small
+    color: var(--makyo-muted)
+
+  &:hover
+    border-color: rgba(255, 211, 84, .38)
+    color: var(--makyo-yellow)
+    transform: translateY(-2px)
+    box-shadow: 0 12px 26px rgba(0, 0, 0, .18)
+
+.makyo-rank__table
+  overflow: hidden
+  border: 1px solid rgba(255, 211, 84, .16)
+  border-radius: 12px
+  background: linear-gradient(135deg, rgba(13, 44, 102, .72), rgba(6, 17, 42, .9))
+
+.makyo-rank__row
+  display: grid
+  grid-template-columns: 64px 1fr 1.15fr 96px 100px
+  gap: 10px
+  align-items: center
+  min-height: 46px
+  padding: 10px 14px
+  border-bottom: 1px solid rgba(255, 211, 84, .1)
+  color: rgba(255, 255, 255, .78)
+  font-size: .82em
+
+  &:last-child
+    border-bottom: 0
+
+.makyo-rank__row--head
+  min-height: 40px
+  background: rgba(255, 211, 84, .11)
+  color: var(--makyo-yellow)
+  font-size: .72em
+  font-weight: bold
+  letter-spacing: .08em
+
+.makyo-rank__place,
+.makyo-rank__score
+  color: var(--makyo-yellow)
+  font-weight: bold
+
+.makyo-rank__score
+  text-align: right
+
+.makyo-rank__empty
+  padding: 18px
+  color: var(--makyo-muted)
+  text-align: center
+
+.makyo-rank__caption
+  margin: 10px 0 0
+  color: var(--makyo-muted)
+  font-size: .72em
+  text-align: center
+
+  code
+    color: var(--makyo-yellow)
 
 .makyo-gallery
   margin-bottom: 20px
@@ -327,7 +455,9 @@
   .makyo-gallery
     padding: 18px
 
-  .makyo-gallery__head
+  .makyo-gallery__head,
+  .makyo-rank__head,
+  .makyo-links__head
     display: block
 
     p
@@ -345,3 +475,16 @@
 
   .makyo-music
     padding: 14px
+
+  .makyo-rank
+    padding: 18px
+
+  .makyo-links
+    padding: 18px
+
+  .makyo-rank__row
+    grid-template-columns: 48px 1fr 78px
+
+    span:nth-child(3),
+    span:nth-child(5)
+      display: none

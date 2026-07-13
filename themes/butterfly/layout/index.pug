@@ -39,7 +39,7 @@ block content
           img(src=url_for('/img/11ren.jpg') alt='HTML 在线小游戏')
           .makyo-portal__game-copy
             span HTML GAME
-            h3 HTML 小游戏专区
+            h3 Online 在线游戏专区
             p 后期可把自己制作或授权的 HTML 游戏放到 <code>source/games/</code>，直接通过网页游玩。
             a.button--animated(href=url_for('/games/'))
               i.fas.fa-play
@@ -52,6 +52,23 @@ block content
           a.button--animated(href=url_for('/downloads/makyo-toitsusen.apk') download)
             i.fas.fa-download
             |  下载 APK
+
+    section.makyo-rank(data-rank-url=url_for('/games/leaderboard.json'))
+      .makyo-rank__head
+        div
+          span.makyo-portal__eyebrow ONLINE SCORE
+          h2 小游戏在线积分排名
+        p 先展示站点排行榜；后期接入后端后，可让玩家自动提交分数。
+      .makyo-rank__table
+        .makyo-rank__row.makyo-rank__row--head
+          span 排名
+          span 玩家
+          span 游戏
+          span 分数
+          span 时间
+        .makyo-rank__body
+          .makyo-rank__empty 正在读取排行榜…
+      p.makyo-rank__caption 数据文件：<code>source/games/leaderboard.json</code>
 
     section.makyo-gallery(data-manifest-url=url_for('/gallery/manifest.json'))
       .makyo-gallery__head
@@ -68,6 +85,18 @@ block content
         button.makyo-gallery__arrow.makyo-gallery__next(type='button' aria-label='下一张图片' disabled)
           i.fas.fa-angle-right
       p.makyo-gallery__caption 图片上传后可通过左右箭头浏览，点击图片查看原图。
+
+    section.makyo-links
+      .makyo-links__head
+        div
+          span.makyo-portal__eyebrow FRIEND LINKS
+          h2 友情链接
+        p 幽游白书粉丝与游戏资源站点互链入口。
+      .makyo-links__grid
+        a.makyo-links__item(href='https://glimsun.top' target='_blank' rel='noopener')
+          i.fas.fa-link
+          span glimsun.top
+          small 访问友情链接
 
     +indexPostUI
 

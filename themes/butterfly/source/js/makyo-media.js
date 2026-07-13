@@ -72,6 +72,41 @@
     show(0)
   }
 
+  const escapeHtml = value => String(value || '').replace(/[&<>"']/g, char => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  }[char]))
+
+  const setupLeaderboard = async () => {
+    const rank = document.querySelector('.makyo-rank')
+    if (!rank) return
+    const body = rank.querySelector('.makyo-rank__body')
+    const rows = await fetchList(rank.dataset.rankUrl)
+    if (!Array.isArray(rows) || !rows.length) {
+      body.innerHTML = '<div class="makyo-rank__empty">暂无排名，编辑 source/games/leaderboard.json 后会显示。</div>'
+      return
+    }
+
+    body.innerHTML = rows
+      .slice()
+      .sort((a, b) => Number(b.score || 0) - Number(a.score || 0))
+      .slice(0, 10)
+      .map((item, index) => `
+        <div class="makyo-rank__row">
+          <span class="makyo-rank__place">#${index + 1}</span>
+          <span>${escapeHtml(item.player)}</span>
+          <span>${escapeHtml(item.game)}</span>
+          <span class="makyo-rank__score">${Number(item.score || 0).toLocaleString()}</span>
+          <span>${escapeHtml(item.date)}</span>
+        </div>
+      `)
+      .join('')
+  }
+
   setupMusic()
   setupGallery()
+  setupLeaderboard()
 })()
