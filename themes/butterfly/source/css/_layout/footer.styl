@@ -1,6 +1,7 @@
 #footer
   position: relative
-  background-color: $light-blue
+  border-top: 1px solid rgba(255, 211, 84, .22)
+  background: radial-gradient(circle at 50% 0, rgba(255, 211, 84, .12), transparent 34%), linear-gradient(145deg, #071a3d, #050914)
   background-attachment: scroll
   background-position: bottom
   background-size: cover
@@ -15,14 +16,14 @@
 
   & > *
     position: relative
-    color: var(--light-grey)
+    color: rgba(255, 255, 255, .72)
 
   a
-    color: var(--light-grey)
+    color: rgba(255, 211, 84, .82)
     transition: all .3s ease-in-out
 
     &:hover
-      color: $light-blue
+      color: #ffd354
 
   .footer-separator
     margin: 0 4px
@@ -76,7 +77,7 @@
 
     if hexo-config('footer.nav')
       padding: 10px 8px
-      background-color: rgba(0, 0, 0, .1)
+      background-color: rgba(0, 0, 0, .18)
 
       .copyright,
       .framework-info,
